@@ -1,8 +1,8 @@
-package com.hardiksachan.docket.domain.auth
+package com.hardiksachan.docket.auth.auth_domain
 
 import arrow.core.Either
-import com.hardiksachan.docket.domain.core.failures.ValueFailure
-import com.hardiksachan.docket.domain.core.validators.validateEmailAddress
+import com.hardiksachan.docket.core.failures.ValueFailure
+import com.hardiksachan.docket.core.validators.validateEmailAddress
 
 @JvmInline
 value class EmailAddress private constructor(val value: Either<ValueFailure<String>, String>) {

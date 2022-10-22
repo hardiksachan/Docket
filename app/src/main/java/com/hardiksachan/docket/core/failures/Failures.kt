@@ -1,4 +1,4 @@
-package com.hardiksachan.docket.domain.core.failures
+package com.hardiksachan.docket.core.failures
 
 sealed class ValueFailure<out T> {
     data class InvalidEmail(val failedValue: String) : ValueFailure<String>()
