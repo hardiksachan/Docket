@@ -79,6 +79,7 @@ dependencies {
 
     // Strikt - assertion library
     testImplementation "io.strikt:strikt-core:$striktVersion"
+    testImplementation "io.strikt:strikt-arrow:$striktVersion"
 
     // Misc
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
