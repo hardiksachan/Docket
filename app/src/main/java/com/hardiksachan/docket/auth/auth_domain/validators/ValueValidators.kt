@@ -1,4 +1,4 @@
-package com.hardiksachan.docket.core.validators
+package com.hardiksachan.docket.auth.auth_domain.validators
 
 import arrow.core.Either
 import com.hardiksachan.docket.core.failures.ValueFailure
