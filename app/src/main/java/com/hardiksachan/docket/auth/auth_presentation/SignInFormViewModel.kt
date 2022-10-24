@@ -6,6 +6,8 @@ import arrow.core.Either
 import arrow.core.None
 import arrow.core.Option
 import arrow.core.some
+import com.hardiksachan.docket.auth.auth_application.RegisterWithEmailAddressAndPasswordUseCase
+import com.hardiksachan.docket.auth.auth_application.SignInWithEmailAddressAndPasswordUseCase
 import com.hardiksachan.docket.auth.auth_application.SignInWithGoogleUseCase
 import com.hardiksachan.docket.auth.auth_domain.AuthFailure
 import com.hardiksachan.docket.auth.auth_domain.EmailAddress
@@ -17,6 +19,8 @@ import kotlinx.coroutines.launch
 
 class SignInFormViewModel(
     private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
+    private val registerWithEmailAddressAndPasswordUseCase: RegisterWithEmailAddressAndPasswordUseCase,
+    private val signInWithEmailAddressAndPasswordUseCase: SignInWithEmailAddressAndPasswordUseCase,
 ) : ViewModel() {
     data class ViewState(
         val email: EmailAddress = EmailAddress.create(""),
@@ -41,9 +45,9 @@ class SignInFormViewModel(
         when (event) {
             is ViewEvent.EmailChanged -> handleEmailChanged(event)
             is ViewEvent.PasswordChanged -> handlePasswordChanged(event)
-            ViewEvent.RegisterWithEmailAndPasswordPressed -> TODO()
-            ViewEvent.SignInWithEmailAndPasswordPressed -> TODO()
-            ViewEvent.SignInWithGooglePressed -> handleSignInWithGoogle()
+            ViewEvent.RegisterWithEmailAndPasswordPressed -> handleRegisterWithEmailAddressAndPasswordPressed()
+            ViewEvent.SignInWithEmailAndPasswordPressed -> handleSignInWithEmailAddressAndPasswordPressed()
+            ViewEvent.SignInWithGooglePressed -> handleSignInWithGooglePressed()
         }
     }
 
@@ -65,7 +69,7 @@ class SignInFormViewModel(
         }
     }
 
-    private fun handleSignInWithGoogle() {
+    private fun handleSignInWithGooglePressed() {
         _viewState.update {
             it.copy(
                 isSubmitting = true,
@@ -81,5 +85,51 @@ class SignInFormViewModel(
                 )
             }
         }
+    }
+
+    private fun handleRegisterWithEmailAddressAndPasswordPressed() =
+        registerOrSignInWithEmailAddressAndPassword { email, password ->
+            registerWithEmailAddressAndPasswordUseCase.execute(email, password)
+        }
+
+    private fun handleSignInWithEmailAddressAndPasswordPressed() =
+        registerOrSignInWithEmailAddressAndPassword { email, password ->
+            signInWithEmailAddressAndPasswordUseCase.execute(email, password)
+        }
+
+    private fun registerOrSignInWithEmailAddressAndPassword(
+        useCaseForwardedCall: suspend (EmailAddress, Password) -> Either<AuthFailure, Unit>
+    ) {
+        val (email, password) = _viewState.value.run { email to password }
+
+        if (!email.isValid() || !password.isValid()) {
+            _viewState.update {
+                it.copy(
+                    authFailureOrSuccessOption = None,
+                    showErrorMessages = true
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            _viewState.update {
+                it.copy(
+                    isSubmitting = true,
+                    authFailureOrSuccessOption = None
+                )
+            }
+
+            val useCaseResponse = useCaseForwardedCall(email, password)
+
+            _viewState.update {
+                it.copy(
+                    isSubmitting = false,
+                    authFailureOrSuccessOption = useCaseResponse.some()
+                )
+            }
+        }
+
+
     }
 }

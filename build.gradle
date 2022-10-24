@@ -9,6 +9,7 @@ buildscript {
         turbineVersion = "0.12.0"
         datetimeVersion = "0.4.0"
         arrowVersion = "1.0.1"
+        mockkVersion = "1.13.2"
     }
 }
 
