@@ -1,31 +1,34 @@
 package com.hardiksachan.docket.auth.auth_domain
 
 import com.hardiksachan.docket.core.failures.ValueFailure
-import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.core.spec.style.FunSpec
 import strikt.api.expectThat
 import strikt.arrow.isLeft
 import strikt.arrow.isRight
 
-class EmailAddressSpec : BehaviorSpec({
-    Given("an email address string") {
-        When("is a valid email") {
+class EmailAddressSpec : FunSpec({
+    context("a possible email address string") {
+        test("is a valid email, an EmailAddress with valid email is created") {
+            // arrange
             val validEmailStr = "abc@xyz.com"
-            Then("an EmailAddress with valid email is created") {
-                val email = EmailAddress.create(validEmailStr)
 
-                expectThat(email.value)
-                    .isRight(validEmailStr)
-            }
+            // act
+            val email = EmailAddress.create(validEmailStr)
+
+            // assert
+            expectThat(email.value)
+                .isRight(validEmailStr)
         }
-
-        When("is NOT a valid email") {
+        test("is NOT a valid email, an EmailAddress with ValueFailure is created") {
+            // arrange
             val invalidEmailStr = "dgnaudbg"
-            Then("an EmailAddress with ValueFailure is created") {
-                val email = EmailAddress.create(invalidEmailStr)
 
-                expectThat(email.value)
-                    .isLeft(ValueFailure.InvalidEmail(invalidEmailStr))
-            }
+            // act
+            val email = EmailAddress.create(invalidEmailStr)
+
+            // assert
+            expectThat(email.value)
+                .isLeft(ValueFailure.InvalidEmail(invalidEmailStr))
         }
     }
 })

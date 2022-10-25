@@ -58,7 +58,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
         }
 
         test("registration is successful, expect no error response") {
-
+            // arrange
             every {
                 authResultTaskMock.isSuccessful
             } returns true
@@ -67,11 +67,13 @@ class FirebaseAuthFacadeSpec : FunSpec({
                 authResultTaskMock.result
             } returns mockk()
 
+            // act
             val result = firebaseAuthFacade.registerWithEmailAndPassword(
                 EmailAddress.create("john@gmail.com"),
                 Password.create("12345678")
             )
 
+            // assert
             expectThat(result).isRight(Unit)
 
             verify(exactly = 1) {
@@ -91,6 +93,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
             FirebaseAuthInvalidCredentialsException("FAKE", "fake invalid credential exception") to AuthFailure.InvalidEmailAndPasswordCombination,
             FirebaseAuthException("FAKE", "fake invalid auth exception") to AuthFailure.ServerError,
         ) { (exception, failure) ->
+            // arrange
             every {
                 authResultTaskMock.isSuccessful
             } returns false
@@ -99,11 +102,13 @@ class FirebaseAuthFacadeSpec : FunSpec({
                 authResultTaskMock.exception
             } returns exception
 
+            // act
             val result = firebaseAuthFacade.registerWithEmailAndPassword(
                 EmailAddress.create("john@gmail.com"),
                 Password.create("12345678")
             )
 
+            // assert
             expectThat(result).isLeft(failure)
 
             verify(exactly = 1) {
