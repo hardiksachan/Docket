@@ -11,6 +11,15 @@ buildscript {
         arrowVersion = "1.0.1"
         mockkVersion = "1.13.2"
     }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Add the dependency for the Google services Gradle plugin
+        classpath 'com.google.gms:google-services:4.3.14'
+    }
 }
 
 plugins {
