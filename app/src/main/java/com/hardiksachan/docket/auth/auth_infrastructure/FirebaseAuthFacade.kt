@@ -4,19 +4,16 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.hardiksachan.docket.auth.auth_domain.AuthFacade
-import com.hardiksachan.docket.auth.auth_domain.AuthFailure
-import com.hardiksachan.docket.auth.auth_domain.EmailAddress
-import com.hardiksachan.docket.auth.auth_domain.Password
+import com.google.firebase.auth.*
+import com.hardiksachan.docket.auth.auth_domain.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+typealias GoogleAuthCredentialProvider = (idToken: String, accessToken: String) -> AuthCredential
+
 class FirebaseAuthFacade(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val googleAuthCredentialProvider: GoogleAuthCredentialProvider
 ) : AuthFacade {
     override suspend fun registerWithEmailAndPassword(
         emailAddress: EmailAddress, password: Password
@@ -48,8 +45,28 @@ class FirebaseAuthFacade(
             }, { Unit.right() })
     }
 
-    override suspend fun signInWithGoogle(): Either<AuthFailure, Unit> {
-        return Unit.right()
+    override suspend fun signInWithToken(token: Token): Either<AuthFailure, Unit> {
+        val credential = token.mapToCredential()
+
+        return auth.signInWithCredential(credential)
+            .awaitCompletion()
+            .fold(
+                { exception ->
+                    when (exception) {
+                        is FirebaseAuthInvalidUserException,
+                        is FirebaseAuthInvalidCredentialsException ->
+                            AuthFailure.InvalidToken
+                        is FirebaseAuthUserCollisionException ->
+                            AuthFailure.EmailAlreadyInUse
+                        else -> AuthFailure.ServerError
+                    }.left()
+                },
+                { Unit.right() }
+            )
+    }
+
+    private fun Token.mapToCredential(): AuthCredential = when (this) {
+        is Token.Google -> googleAuthCredentialProvider(idToken, accessToken)
     }
 }
 

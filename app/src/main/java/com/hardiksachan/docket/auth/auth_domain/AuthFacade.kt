@@ -13,5 +13,7 @@ interface AuthFacade {
         password: Password,
     ): Either<AuthFailure, Unit>
 
-    suspend fun signInWithGoogle(): Either<AuthFailure, Unit>
+    suspend fun signInWithToken(
+        token: Token
+    ): Either<AuthFailure, Unit>
 }

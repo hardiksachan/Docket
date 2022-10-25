@@ -6,6 +6,7 @@ import com.google.firebase.auth.*
 import com.hardiksachan.docket.auth.auth_domain.AuthFailure
 import com.hardiksachan.docket.auth.auth_domain.EmailAddress
 import com.hardiksachan.docket.auth.auth_domain.Password
+import com.hardiksachan.docket.auth.auth_domain.Token
 import com.hardiksachan.docket.core.MainCoroutineListener
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.FunSpec
@@ -23,30 +24,18 @@ class FirebaseAuthFacadeSpec : FunSpec({
     val coroutineListener = MainCoroutineListener()
     listeners(coroutineListener)
 
+    val googleAuthCredentialProviderMock = mockk<GoogleAuthCredentialProvider>()
+
     val authMock = mockk<FirebaseAuth>()
+    val authResultTaskMock: Task<AuthResult> = mockk()
 
     lateinit var firebaseAuthFacade: FirebaseAuthFacade
 
     beforeTest {
-        firebaseAuthFacade = FirebaseAuthFacade(authMock)
-    }
-
-    afterTest {
-        clearAllMocks()
-    }
-
-    context("registerWithEmailAndPassword is called") {
-        val emailSlot = slot<String>()
-        val passwordSlot = slot<String>()
-
-        val authResultTaskMock: Task<AuthResult> = mockk()
-
-        every {
-            authMock.createUserWithEmailAndPassword(
-                capture(emailSlot),
-                capture(passwordSlot)
-            )
-        } returns authResultTaskMock
+        firebaseAuthFacade = FirebaseAuthFacade(
+            authMock,
+            googleAuthCredentialProviderMock
+        )
 
         val listenerSlot: CapturingSlot<OnCompleteListener<AuthResult>> = slot()
 
@@ -57,6 +46,22 @@ class FirebaseAuthFacadeSpec : FunSpec({
             listenerSlot.captured.onComplete(authResultTaskMock)
             mockk()
         }
+    }
+
+    afterTest {
+        clearAllMocks()
+    }
+
+    context("registerWithEmailAndPassword is called") {
+        val emailSlot = slot<String>()
+        val passwordSlot = slot<String>()
+
+        every {
+            authMock.createUserWithEmailAndPassword(
+                capture(emailSlot),
+                capture(passwordSlot)
+            )
+        } returns authResultTaskMock
 
         test("registration is successful, expect no error response") {
             // arrange
@@ -92,7 +97,10 @@ class FirebaseAuthFacadeSpec : FunSpec({
             nameFn = { "registration is unsuccessful with ${it.first}, expect error response with ${it.second} failure" },
             null to AuthFailure.ServerError,
             FirebaseAuthException("FAKE", "fake auth exception") to AuthFailure.ServerError,
-            FirebaseAuthUserCollisionException("FAKE", "fake user collision exception") to AuthFailure.EmailAlreadyInUse
+            FirebaseAuthUserCollisionException(
+                "FAKE",
+                "fake user collision exception"
+            ) to AuthFailure.EmailAlreadyInUse
         ) { (exception, failure) ->
             // arrange
             every {
@@ -128,24 +136,12 @@ class FirebaseAuthFacadeSpec : FunSpec({
         val emailSlot = slot<String>()
         val passwordSlot = slot<String>()
 
-        val authResultTaskMock: Task<AuthResult> = mockk()
-
         every {
             authMock.signInWithEmailAndPassword(
                 capture(emailSlot),
                 capture(passwordSlot)
             )
         } returns authResultTaskMock
-
-        val listenerSlot: CapturingSlot<OnCompleteListener<AuthResult>> = slot()
-
-        every {
-            authResultTaskMock
-                .addOnCompleteListener(capture(listenerSlot))
-        } answers {
-            listenerSlot.captured.onComplete(authResultTaskMock)
-            mockk()
-        }
 
         test("sign in is successful, expect no error response") {
             // arrange
@@ -180,8 +176,14 @@ class FirebaseAuthFacadeSpec : FunSpec({
         withData<Pair<Exception?, AuthFailure>>(
             nameFn = { "sign in is unsuccessful with ${it.first}, expect error response with ${it.second} failure" },
             null to AuthFailure.ServerError,
-            FirebaseAuthInvalidUserException("FAKE", "fake invalid user exception") to AuthFailure.InvalidEmailAndPasswordCombination,
-            FirebaseAuthInvalidCredentialsException("FAKE", "fake invalid credential exception") to AuthFailure.InvalidEmailAndPasswordCombination
+            FirebaseAuthInvalidUserException(
+                "FAKE",
+                "fake invalid user exception"
+            ) to AuthFailure.InvalidEmailAndPasswordCombination,
+            FirebaseAuthInvalidCredentialsException(
+                "FAKE",
+                "fake invalid credential exception"
+            ) to AuthFailure.InvalidEmailAndPasswordCombination
         ) { (exception, failure) ->
             // arrange
             every {
@@ -213,14 +215,113 @@ class FirebaseAuthFacadeSpec : FunSpec({
 
     }
 
-    context("signInWithGoogle is called") {
+    context("signInWithToken is called") {
 
-        test("sign in is successful, expect no error response") {
-            // act
-            val result = firebaseAuthFacade.signInWithGoogle()
+        every {
+            authMock.signInWithCredential(any())
+        } returns authResultTaskMock
 
-            // assert
-            expectThat(result).isRight(Unit)
+        context("with google token") {
+
+            val token = Token.Google("googleIdToken", "googleAccessToken")
+            test("sign in is successful, expect no error response") {
+                // arrange
+                val idTokenSlot = slot<String>()
+                val accessTokenSlot = slot<String>()
+
+                val mockCredential = mockk<GoogleAuthCredential>()
+
+                every {
+                    googleAuthCredentialProviderMock.invoke(
+                        capture(idTokenSlot),
+                        capture(accessTokenSlot)
+                    )
+                } returns mockCredential
+
+                every {
+                    authResultTaskMock.isSuccessful
+                } returns true
+
+                every {
+                    authResultTaskMock.result
+                } returns mockk()
+
+                // act
+                val result = firebaseAuthFacade.signInWithToken(token)
+
+                // assert
+                expectThat(result).isRight(Unit)
+
+                expect {
+                    that(idTokenSlot.captured) isEqualTo "googleIdToken"
+                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken"
+                }
+
+                verify(exactly = 1) {
+                    authMock.signInWithCredential(mockCredential)
+                }
+
+                verify(exactly = 1) {
+                    authResultTaskMock.isSuccessful
+                }
+            }
+
+            withData<Pair<Exception?, AuthFailure>>(
+                nameFn = { "sign in is unsuccessful with ${it.first}, expect error response with ${it.second} failure" },
+                null to AuthFailure.ServerError,
+                FirebaseAuthInvalidUserException(
+                    "FAKE",
+                    "fake invalid user exception"
+                ) to AuthFailure.InvalidToken,
+                FirebaseAuthInvalidCredentialsException(
+                    "FAKE",
+                    "fake invalid credential exception"
+                ) to AuthFailure.InvalidToken,
+                FirebaseAuthUserCollisionException(
+                    "FAKE",
+                    "fake invalid collision exception"
+                ) to AuthFailure.EmailAlreadyInUse
+            ) { (exception, failure) ->
+                // arrange
+                val idTokenSlot = slot<String>()
+                val accessTokenSlot = slot<String>()
+
+                val mockCredential = mockk<GoogleAuthCredential>()
+
+                every {
+                    googleAuthCredentialProviderMock.invoke(
+                        capture(idTokenSlot),
+                        capture(accessTokenSlot)
+                    )
+                } returns mockCredential
+
+                every {
+                    authResultTaskMock.isSuccessful
+                } returns false
+
+                every {
+                    authResultTaskMock.exception
+                } returns exception
+
+                // act
+                val result = firebaseAuthFacade.signInWithToken(token)
+
+                // assert
+                expectThat(result).isLeft(failure)
+
+                expect {
+                    that(idTokenSlot.captured) isEqualTo "googleIdToken"
+                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken"
+                }
+
+                verify(exactly = 1) {
+                    authMock.signInWithCredential(mockCredential)
+                }
+
+                verify(exactly = 1) {
+                    authResultTaskMock.isSuccessful
+                }
+            }
         }
     }
 })
