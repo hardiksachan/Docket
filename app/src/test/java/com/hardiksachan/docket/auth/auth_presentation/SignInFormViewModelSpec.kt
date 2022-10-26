@@ -5,7 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import com.hardiksachan.docket.auth.auth_application.RegisterWithEmailAddressAndPasswordUseCase
 import com.hardiksachan.docket.auth.auth_application.SignInWithEmailAddressAndPasswordUseCase
-import com.hardiksachan.docket.auth.auth_application.SignInWithGoogleUseCase
+import com.hardiksachan.docket.auth.auth_application.SignInWithTokenUseCase
 import com.hardiksachan.docket.auth.auth_domain.AuthFailure
 import com.hardiksachan.docket.auth.auth_domain.EmailAddress
 import com.hardiksachan.docket.auth.auth_domain.Password
@@ -30,8 +30,8 @@ class SignInFormViewModelSpec : FunSpec({
     val coroutineListener = MainCoroutineListener()
     listeners(coroutineListener)
 
-    val signInWithGoogleUseCaseMock =
-        mockk<SignInWithGoogleUseCase>()
+    val signInWithTokenUseCaseMock =
+        mockk<SignInWithTokenUseCase>()
     val registerWithEmailAddressAndPasswordUseCaseMock =
         mockk<RegisterWithEmailAddressAndPasswordUseCase>()
     val signInWithEmailAddressAndPasswordUseCaseMock =
@@ -41,7 +41,7 @@ class SignInFormViewModelSpec : FunSpec({
 
     beforeTest {
         vm = SignInFormViewModel(
-            signInWithGoogleUseCaseMock,
+            signInWithTokenUseCaseMock,
             registerWithEmailAddressAndPasswordUseCaseMock,
             signInWithEmailAddressAndPasswordUseCaseMock
         )
@@ -83,7 +83,7 @@ class SignInFormViewModelSpec : FunSpec({
         test("google sign in is successful, state changes to loading, then state has auth success") {
             // arrange
             coEvery {
-                signInWithGoogleUseCaseMock
+                signInWithTokenUseCaseMock
                     .execute()
             } returns Unit.right()
 
@@ -112,7 +112,7 @@ class SignInFormViewModelSpec : FunSpec({
         test("google sign in is unsuccessful, state changes to loading, then state has auth failure") {
             // arrange
             coEvery {
-                signInWithGoogleUseCaseMock
+                signInWithTokenUseCaseMock
                     .execute()
             } returns AuthFailure.ServerError.left()
 

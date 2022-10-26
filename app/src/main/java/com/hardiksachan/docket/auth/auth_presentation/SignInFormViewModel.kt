@@ -8,7 +8,7 @@ import arrow.core.Option
 import arrow.core.some
 import com.hardiksachan.docket.auth.auth_application.RegisterWithEmailAddressAndPasswordUseCase
 import com.hardiksachan.docket.auth.auth_application.SignInWithEmailAddressAndPasswordUseCase
-import com.hardiksachan.docket.auth.auth_application.SignInWithGoogleUseCase
+import com.hardiksachan.docket.auth.auth_application.SignInWithTokenUseCase
 import com.hardiksachan.docket.auth.auth_domain.AuthFailure
 import com.hardiksachan.docket.auth.auth_domain.EmailAddress
 import com.hardiksachan.docket.auth.auth_domain.Password
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignInFormViewModel(
-    private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
+    private val signInWithGoogleUseCase: SignInWithTokenUseCase,
     private val registerWithEmailAddressAndPasswordUseCase: RegisterWithEmailAddressAndPasswordUseCase,
     private val signInWithEmailAddressAndPasswordUseCase: SignInWithEmailAddressAndPasswordUseCase,
 ) : ViewModel() {

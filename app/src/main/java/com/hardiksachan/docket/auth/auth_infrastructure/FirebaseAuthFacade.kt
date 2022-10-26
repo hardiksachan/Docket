@@ -1,6 +1,7 @@
 package com.hardiksachan.docket.auth.auth_infrastructure
 
 import arrow.core.Either
+import arrow.core.Option
 import arrow.core.left
 import arrow.core.right
 import com.google.android.gms.tasks.Task
@@ -9,7 +10,7 @@ import com.hardiksachan.docket.auth.auth_domain.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-typealias GoogleAuthCredentialProvider = (idToken: String, accessToken: String) -> AuthCredential
+typealias GoogleAuthCredentialProvider = (idToken: String, accessToken: Option<String>) -> AuthCredential
 
 class FirebaseAuthFacade(
     private val auth: FirebaseAuth,

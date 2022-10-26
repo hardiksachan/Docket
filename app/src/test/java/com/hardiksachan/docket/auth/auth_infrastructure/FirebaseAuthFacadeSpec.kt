@@ -1,5 +1,7 @@
 package com.hardiksachan.docket.auth.auth_infrastructure
 
+import arrow.core.Option
+import arrow.core.some
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
@@ -223,11 +225,11 @@ class FirebaseAuthFacadeSpec : FunSpec({
 
         context("with google token") {
 
-            val token = Token.Google("googleIdToken", "googleAccessToken")
+            val token = Token.Google("googleIdToken", "googleAccessToken".some())
             test("sign in is successful, expect no error response") {
                 // arrange
                 val idTokenSlot = slot<String>()
-                val accessTokenSlot = slot<String>()
+                val accessTokenSlot = slot<Option<String>>()
 
                 val mockCredential = mockk<GoogleAuthCredential>()
 
@@ -254,7 +256,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
 
                 expect {
                     that(idTokenSlot.captured) isEqualTo "googleIdToken"
-                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken"
+                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken".some()
                 }
 
                 verify(exactly = 1) {
@@ -284,7 +286,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
             ) { (exception, failure) ->
                 // arrange
                 val idTokenSlot = slot<String>()
-                val accessTokenSlot = slot<String>()
+                val accessTokenSlot = slot<Option<String>>()
 
                 val mockCredential = mockk<GoogleAuthCredential>()
 
@@ -311,7 +313,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
 
                 expect {
                     that(idTokenSlot.captured) isEqualTo "googleIdToken"
-                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken"
+                    that(accessTokenSlot.captured) isEqualTo "googleAccessToken".some()
                 }
 
                 verify(exactly = 1) {

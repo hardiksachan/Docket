@@ -6,17 +6,10 @@ import com.hardiksachan.docket.auth.auth_domain.AuthFailure
 import com.hardiksachan.docket.auth.auth_domain.EmailAddress
 import com.hardiksachan.docket.auth.auth_domain.Password
 
-interface SignInWithEmailAddressAndPasswordUseCase {
-    suspend fun execute(
-        emailAddress: EmailAddress,
-        password: Password
-    ): Either<AuthFailure, Unit>
-}
-
-class SignInWithEmailAddressAndPasswordUseCaseImpl(
+class SignInWithEmailAddressAndPasswordUseCase(
     private val authFacade: AuthFacade
-) : SignInWithEmailAddressAndPasswordUseCase {
-    override suspend fun execute(
+)  {
+    suspend fun execute(
         emailAddress: EmailAddress,
         password: Password
     ): Either<AuthFailure, Unit> = authFacade.signInWithEmailAndPassword(emailAddress, password)
