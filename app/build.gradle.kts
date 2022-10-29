@@ -55,6 +55,8 @@ tasks.withType<Test> {
 }
 
 dependencies {
+    implementation(project(Libs.Kotlin.core))
+
     with(Dependencies.AndroidX) {
         implementation(core)
         implementation(activityCompose)

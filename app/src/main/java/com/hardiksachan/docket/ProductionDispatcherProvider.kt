@@ -1,5 +1,6 @@
-package com.hardiksachan.docket.core
+package com.hardiksachan.docket
 
+import com.hardiksachan.core.DispatcherProvider
 import kotlinx.coroutines.Dispatchers
 
 object ProductionDispatcherProvider : DispatcherProvider {

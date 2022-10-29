@@ -1,6 +1,6 @@
-package com.hardiksachan.docket.core.errors
+package com.hardiksachan.core.errors
 
-import com.hardiksachan.docket.core.failures.ValueFailure
+import com.hardiksachan.core.failures.ValueFailure
 
 class UnexpectedValueError (private val valueFailure: ValueFailure<*>) : Error() {
     override val message: String

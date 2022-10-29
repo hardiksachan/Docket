@@ -1,7 +1,7 @@
 package com.hardiksachan.docket.auth.auth_domain.validators
 
 import arrow.core.Either
-import com.hardiksachan.docket.core.failures.ValueFailure
+import com.hardiksachan.core.failures.ValueFailure
 
 internal fun validateEmailAddress(input: String): Either<ValueFailure<String>, String> {
     val regex = """[\w-.]+@([\w-]+\.)+[\w-]{2,4}""".toRegex()

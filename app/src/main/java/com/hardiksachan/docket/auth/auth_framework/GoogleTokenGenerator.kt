@@ -14,11 +14,10 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import com.hardiksachan.core.flatMapLeft
 import com.hardiksachan.docket.auth.auth_domain.Token
 import com.hardiksachan.docket.auth.auth_domain.TokenGeneratorFacade
 import com.hardiksachan.docket.auth.auth_infrastructure.awaitCompletion
-import com.hardiksachan.docket.core.DispatcherProvider
-import com.hardiksachan.docket.core.flatMapLeft
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
@@ -28,7 +27,7 @@ class GoogleTokenGenerator(
     activity: ComponentActivity,
     private val oneTapClient: SignInClient,
     private val webServerId: String,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: com.hardiksachan.core.DispatcherProvider
 ) : TokenGeneratorFacade, CoroutineScope {
 
     override val coroutineContext: CoroutineContext

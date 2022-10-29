@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Docket"
 include(":app")
+include(":core")

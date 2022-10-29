@@ -1,4 +1,4 @@
-package com.hardiksachan.docket.core
+package com.hardiksachan.core
 
 import kotlin.coroutines.CoroutineContext
 

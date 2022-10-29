@@ -10,4 +10,11 @@ object BuildPlugins {
     }
 
     const val googleServices = "com.google.gms.google-services"
+    const val javaLibrary = "java-library"
+}
+
+object Libs {
+    object Kotlin {
+        const val core = ":core"
+    }
 }
