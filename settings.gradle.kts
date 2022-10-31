@@ -16,3 +16,8 @@ dependencyResolutionManagement {
 rootProject.name = "Docket"
 include(":app")
 include(":core")
+include(":auth:auth-domain")
+include(":auth:auth-application")
+include(":auth:auth-infrastructure")
+include(":auth:auth-framework")
+include(":auth:auth-presentation")

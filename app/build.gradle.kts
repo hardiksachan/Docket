@@ -55,7 +55,10 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    implementation(project(Libs.Kotlin.core))
+    with(Libs) {
+        implementation(project(core))
+        implementation(project(Libs.Auth.domain))
+    }
 
     with(Dependencies.AndroidX) {
         implementation(core)
@@ -82,13 +85,6 @@ dependencies {
         implementation(core)
         implementation(coroutines)
     }
-
-
-    with(Dependencies.Firebase) {
-        implementation(platform(bom))
-        implementation(auth)
-    }
-    implementation(Dependencies.googleAuth)
 
     with(Dependencies.Kotest) {
         testImplementation(runner)

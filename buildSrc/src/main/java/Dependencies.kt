@@ -3,6 +3,7 @@ object Dependencies {
 
     object AndroidX {
         const val core = "androidx.core:core-ktx:${Version.androidCore}"
+        const val activity = "androidx.activity:activity-ktx:${Version.activity}"
         const val activityCompose = "androidx.activity:activity-compose:${Version.activityCompose}"
         const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycle}"
 
@@ -51,7 +52,7 @@ object Dependencies {
     object Strikt {
         const val core = "io.strikt:strikt-core:${Version.strikt}"
         const val arrow = "io.strikt:strikt-arrow:${Version.strikt}"
-        const val filePeek  = "com.christophsturm:filepeek:${Version.filepeek}"
+        const val filePeek = "com.christophsturm:filepeek:${Version.filepeek}"
     }
 
     object MockK {
@@ -59,7 +60,6 @@ object Dependencies {
         const val android = "io.mockk:mockk-android:${Version.mockK}"
         const val agent = "io.mockk:mockk-agent:${Version.mockK}"
     }
-
 
 
 }

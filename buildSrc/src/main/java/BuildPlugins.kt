@@ -14,7 +14,11 @@ object BuildPlugins {
 }
 
 object Libs {
-    object Kotlin {
-        const val core = ":core"
+    const val core = ":core"
+
+    object Auth {
+        const val domain = ":auth:auth-domain"
+        const val application = ":auth:auth-application"
+        const val infrastructure = ":auth:auth-infrastructure"
     }
 }
