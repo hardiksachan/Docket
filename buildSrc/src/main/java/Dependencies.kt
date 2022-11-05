@@ -6,6 +6,7 @@ object Dependencies {
         const val activity = "androidx.activity:activity-ktx:${Version.activity}"
         const val activityCompose = "androidx.activity:activity-compose:${Version.activityCompose}"
         const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycle}"
+        const val navigationCompose = "androidx.navigation:navigation-compose:${Version.navigation}"
 
         object Compose {
             const val ui = "androidx.compose.ui:ui:${Version.compose}"

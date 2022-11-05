@@ -57,13 +57,18 @@ tasks.withType<Test> {
 dependencies {
     with(Libs) {
         implementation(project(core))
-        implementation(project(Libs.Auth.domain))
+    }
+
+    with (Libs.Auth) {
+        implementation(project(domain))
+        implementation(project(presentation))
     }
 
     with(Dependencies.AndroidX) {
         implementation(core)
         implementation(activityCompose)
         implementation(lifecycle)
+        implementation(navigationCompose)
     }
 
     with(Dependencies.AndroidX.Compose) {

@@ -1,6 +1,6 @@
 package com.hardiksachan.core.failures
 
-sealed class ValueFailure<out T> {
-    data class InvalidEmail(val failedValue: String) : ValueFailure<String>()
-    data class ShortPassword(val failedValue: String) : ValueFailure<String>()
+sealed class ValueFailure<out T>(val failedValue: T) {
+    class InvalidEmail(failedValue: String) : ValueFailure<String>(failedValue)
+    class ShortPassword(failedValue: String) : ValueFailure<String>(failedValue)
 }

@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/auth/auth-application" />
             <option value="$PROJECT_DIR$/auth/auth-domain" />
             <option value="$PROJECT_DIR$/auth/auth-framework" />
-            <option value="$PROJECT_DIR$/auth/auth-infrastructure" />
             <option value="$PROJECT_DIR$/auth/auth-presentation" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
