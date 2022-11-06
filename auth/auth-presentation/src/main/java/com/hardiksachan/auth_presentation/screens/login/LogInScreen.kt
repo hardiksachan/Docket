@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.login
+package com.hardiksachan.auth_presentation.screens.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -11,9 +11,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hardiksachan.auth_application.AuthPresenter
 import com.hardiksachan.auth_domain.EmailAddress
 import com.hardiksachan.auth_domain.Password
-import com.hardiksachan.auth_presentation.SocialLogin
+import com.hardiksachan.auth_presentation.components.SocialLogin
 import com.hardiksachan.core_ui.theme.DocketTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,7 +100,7 @@ private fun LoginFormButtons(
 internal fun LogInScreenPreview() {
     DocketTheme {
         LogInScreen(
-            uiState = com.hardiksachan.auth_application.AuthPresenter.State(),
+            uiState = AuthPresenter.State(),
             onEmailAddressChanged = {},
             onPasswordChanged = {},
             onLoginButtonPressed = {},
@@ -114,7 +115,7 @@ internal fun LogInScreenPreview() {
 internal fun LogInScreenPreviewWithError() {
     DocketTheme {
         LogInScreen(
-            uiState = com.hardiksachan.auth_application.AuthPresenter.State(
+            uiState = AuthPresenter.State(
                 email = EmailAddress.create("ab"),
                 password = Password.create("dgf"),
                 showErrorMessages = true,

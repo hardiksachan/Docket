@@ -2,6 +2,6 @@ package com.hardiksachan.auth_domain
 
 import arrow.core.Either
 
-interface TokenGeneratorFacade {
+interface TokenFacade {
     suspend fun generate(): Either<Token.GenerationFailure, Token>
 }

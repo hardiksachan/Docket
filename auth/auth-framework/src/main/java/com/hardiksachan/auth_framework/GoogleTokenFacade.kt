@@ -1,10 +1,8 @@
 package com.hardiksachan.auth_framework
 
 import android.content.Intent
-import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -15,35 +13,17 @@ import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.hardiksachan.auth_domain.Token
-import com.hardiksachan.auth_domain.TokenGeneratorFacade
+import com.hardiksachan.auth_domain.TokenFacade
 import com.hardiksachan.core.flatMapLeft
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Inject
 
-class GoogleTokenGenerator(
-    activityResultCaller: ActivityResultCaller,
+class GoogleTokenFacade @Inject constructor(
     private val oneTapClient: SignInClient,
     private val webServerId: String,
-    private val dispatcherProvider: com.hardiksachan.core.DispatcherProvider
-) : TokenGeneratorFacade, CoroutineScope {
-
-    override val coroutineContext: CoroutineContext
-        get() = dispatcherProvider.provideUIContext()
-
-    private val oneTapSignInFlowLauncher: ActivityResultLauncher<IntentSenderRequest>
+) : TokenFacade {
     private val intentChannel = Channel<Intent?>()
-
-    init {
-        oneTapSignInFlowLauncher = activityResultCaller.registerForActivityResult(
-            ActivityResultContracts.StartIntentSenderForResult()
-        ) { result ->
-            launch {
-                intentChannel.send(result.data)
-            }
-        }
-    }
+    var launcher: ActivityResultLauncher<IntentSenderRequest>? = null
 
     override suspend fun generate(): Either<Token.GenerationFailure, Token> {
         val signUpRequest = buildRequest(false)
@@ -62,11 +42,11 @@ class GoogleTokenGenerator(
                 },
                 { result ->
                     try {
-                        oneTapSignInFlowLauncher.launch(
+                        launcher?.launch(
                             IntentSenderRequest.Builder(
                                 result.pendingIntent.intentSender
                             ).build()
-                        )
+                        ) ?: return Token.GenerationFailure.UnableToLaunchPrompt.left()
 
                         val credential = try {
                             oneTapClient
@@ -112,4 +92,8 @@ class GoogleTokenGenerator(
             Token.Google(it).right()
         } ?: Token.GenerationFailure.UnknownFailure.left()
     })
+
+    internal suspend fun onResultFromView(intent: Intent?) {
+        intentChannel.send(intent)
+    }
 }

@@ -26,7 +26,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
     val coroutineListener = MainCoroutineListener()
     listeners(coroutineListener)
 
-    val googleAuthCredentialProviderMock = mockk<GoogleAuthCredentialProvider>()
+    val googleAuthCredentialMock = mockk<GoogleAuthCredential>()
 
     val authMock = mockk<FirebaseAuth>()
     val authResultTaskMock: Task<AuthResult> = mockk()
@@ -36,7 +36,7 @@ class FirebaseAuthFacadeSpec : FunSpec({
     beforeTest {
         firebaseAuthFacade = FirebaseAuthFacade(
             authMock,
-            googleAuthCredentialProviderMock
+            googleAuthCredentialMock
         )
 
         val listenerSlot: CapturingSlot<OnCompleteListener<AuthResult>> = slot()
@@ -231,10 +231,10 @@ class FirebaseAuthFacadeSpec : FunSpec({
                 val idTokenSlot = slot<String>()
                 val accessTokenSlot = slot<Option<String>>()
 
-                val mockCredential = mockk<GoogleAuthCredential>()
+                val mockCredential = mockk<com.google.firebase.auth.GoogleAuthCredential>()
 
                 every {
-                    googleAuthCredentialProviderMock.invoke(
+                    googleAuthCredentialMock.invoke(
                         capture(idTokenSlot),
                         capture(accessTokenSlot)
                     )
@@ -288,10 +288,10 @@ class FirebaseAuthFacadeSpec : FunSpec({
                 val idTokenSlot = slot<String>()
                 val accessTokenSlot = slot<Option<String>>()
 
-                val mockCredential = mockk<GoogleAuthCredential>()
+                val mockCredential = mockk<com.google.firebase.auth.GoogleAuthCredential>()
 
                 every {
-                    googleAuthCredentialProviderMock.invoke(
+                    googleAuthCredentialMock.invoke(
                         capture(idTokenSlot),
                         capture(accessTokenSlot)
                     )

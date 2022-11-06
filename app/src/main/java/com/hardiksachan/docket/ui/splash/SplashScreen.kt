@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.hardiksachan.docket.R
-import com.hardiksachan.docket.ui.theme.DocketTheme
+import com.hardiksachan.core_ui.resources.Graphics
+import com.hardiksachan.core_ui.theme.DocketTheme
 
 @Composable
 fun SplashScreen() {
@@ -25,7 +25,7 @@ fun SplashScreen() {
             .background(MaterialTheme.colorScheme.primary)
     ) {
         Spacer(modifier = Modifier.weight(3f))
-        Image(painterResource(id = R.drawable.docket_logo_name_below), "logo")
+        Image(painterResource(id = Graphics.startScreen), "logo")
         Spacer(modifier = Modifier.weight(4f))
     }
 }

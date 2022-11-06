@@ -11,5 +11,7 @@ object BuildPlugins {
 
     const val googleServices = "com.google.gms.google-services"
     const val javaLibrary = "java-library"
+    const val daggerHilt  = "dagger.hilt.android.plugin"
+    const val kapt = "kotlin-kapt"
 }
 

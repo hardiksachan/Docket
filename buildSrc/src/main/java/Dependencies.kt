@@ -1,5 +1,6 @@
 object Dependencies {
     const val googleServices = "com.google.gms:google-services:${Version.googleServices}"
+    const val hiltAndroidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Version.dagger}"
 
     object AndroidX {
         const val core = "androidx.core:core-ktx:${Version.androidCore}"
@@ -7,11 +8,13 @@ object Dependencies {
         const val activityCompose = "androidx.activity:activity-compose:${Version.activityCompose}"
         const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${Version.lifecycle}"
         const val navigationCompose = "androidx.navigation:navigation-compose:${Version.navigation}"
+        const val hilt = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
         object Compose {
             const val ui = "androidx.compose.ui:ui:${Version.compose}"
             const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Version.compose}"
             const val material3 = "androidx.compose.material3:material3:${Version.composeMaterial}"
+            const val runtime = "androidx.compose.runtime:runtime:${Version.compose}"
 
             // android Test
             const val uiTest = "androidx.compose.ui:ui-test-junit4:${Version.compose}"
@@ -26,6 +29,12 @@ object Dependencies {
             const val espresso = "androidx.test.espresso:espresso-core:3.4.0"
         }
     }
+
+    object Dagger {
+        const val hiltAndroid = "com.google.dagger:hilt-android:${Version.dagger}"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Version.dagger}"
+    }
+    const val javaXInject = "javax.inject:javax.inject:1"
 
     const val kotlinXDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Version.datetime}"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.coroutines}"

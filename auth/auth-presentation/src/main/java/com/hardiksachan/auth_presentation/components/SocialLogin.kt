@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation
+package com.hardiksachan.auth_presentation.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon

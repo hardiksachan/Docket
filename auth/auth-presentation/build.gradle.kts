@@ -1,6 +1,8 @@
 plugins {
     id(BuildPlugins.Android.library)
     id(BuildPlugins.Kotlin.android)
+    id(BuildPlugins.kapt)
+    id(BuildPlugins.daggerHilt)
 }
 
 android {
@@ -28,6 +30,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Version.composeCompiler
+    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
@@ -40,6 +48,7 @@ tasks.withType<Test> {
 dependencies {
     implementation(project(Libs.core))
     implementation(project(Libs.coreUi))
+
     with(Libs.Auth) {
         implementation(project(domain))
         implementation(project(application))
@@ -50,6 +59,7 @@ dependencies {
         implementation(activity)
         implementation(lifecycle)
         implementation(navigationCompose)
+        implementation(hilt)
     }
 
     with(Dependencies.AndroidX.Compose) {
@@ -61,6 +71,11 @@ dependencies {
 
         debugImplementation(uiTooling)
         debugImplementation(uiTestManifest)
+    }
+
+    with(Dependencies.Dagger) {
+        implementation(hiltAndroid)
+        kapt(hiltAndroidCompiler)
     }
 
     with(Dependencies.Arrow) {

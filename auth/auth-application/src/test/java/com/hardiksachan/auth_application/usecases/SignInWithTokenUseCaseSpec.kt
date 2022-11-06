@@ -6,7 +6,7 @@ import arrow.core.right
 import com.hardiksachan.auth_domain.AuthFacade
 import com.hardiksachan.auth_domain.AuthFailure
 import com.hardiksachan.auth_domain.Token
-import com.hardiksachan.auth_domain.TokenGeneratorFacade
+import com.hardiksachan.auth_domain.TokenFacade
 import io.kotest.core.spec.style.FunSpec
 import io.mockk.*
 import strikt.api.expectThat
@@ -15,7 +15,7 @@ import strikt.assertions.isEqualTo
 
 class SignInWithTokenUseCaseSpec : FunSpec({
     val mockAuthFacade: AuthFacade = mockk()
-    val mockTokenGenerator: TokenGeneratorFacade = mockk()
+    val mockTokenGenerator: TokenFacade = mockk()
 
     lateinit var sut: SignInWithTokenUseCase
 

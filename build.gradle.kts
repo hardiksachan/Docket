@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath(Dependencies.googleServices)
+        classpath(Dependencies.hiltAndroidGradlePlugin)
     }
 }
 

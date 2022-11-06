@@ -1,6 +1,8 @@
 plugins {
     id(BuildPlugins.Android.library)
     id(BuildPlugins.Kotlin.android)
+    id(BuildPlugins.kapt)
+    id(BuildPlugins.daggerHilt)
 }
 
 android {
@@ -24,6 +26,12 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Version.composeCompiler
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -43,9 +51,15 @@ dependencies {
         implementation(project(Libs.Auth.domain))
     }
 
-    with (Dependencies.AndroidX) {
+    with(Dependencies.AndroidX) {
         implementation(core)
-        implementation(activity)
+        implementation(activityCompose)
+        implementation(Dependencies.AndroidX.Compose.runtime)
+    }
+
+    with(Dependencies.Dagger) {
+        implementation(hiltAndroid)
+        kapt(hiltAndroidCompiler)
     }
 
     with(Dependencies.Arrow) {
@@ -54,7 +68,7 @@ dependencies {
         implementation(coroutines)
     }
 
-    with (Dependencies.Firebase) {
+    with(Dependencies.Firebase) {
         implementation(platform(bom))
         implementation(auth)
     }

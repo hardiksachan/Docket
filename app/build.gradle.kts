@@ -1,6 +1,8 @@
 plugins {
     id(BuildPlugins.Android.application)
     id(BuildPlugins.Kotlin.android)
+    id(BuildPlugins.kapt)
+    id(BuildPlugins.daggerHilt)
     id(BuildPlugins.googleServices)
 }
 
@@ -57,11 +59,13 @@ tasks.withType<Test> {
 dependencies {
     with(Libs) {
         implementation(project(core))
+        implementation(project(coreUi))
     }
 
     with (Libs.Auth) {
         implementation(project(domain))
-        implementation(project(application))
+        implementation(project(presentation))
+        implementation(project(framework))
     }
 
     with(Dependencies.AndroidX) {
@@ -80,6 +84,11 @@ dependencies {
 
         debugImplementation(uiTooling)
         debugImplementation(uiTestManifest)
+    }
+
+    with (Dependencies.Dagger) {
+        implementation(hiltAndroid)
+        kapt(hiltAndroidCompiler)
     }
 
     implementation(Dependencies.kotlinXDateTime)

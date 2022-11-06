@@ -1,20 +1,18 @@
 package com.hardiksachan.auth_framework
 
 import arrow.core.Either
-import arrow.core.Option
 import arrow.core.left
 import arrow.core.right
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.hardiksachan.auth_domain.*
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-typealias GoogleAuthCredentialProvider = (idToken: String, accessToken: Option<String>) -> AuthCredential
-
-class FirebaseAuthFacade(
+class FirebaseAuthFacade @Inject constructor(
     private val auth: FirebaseAuth,
-    private val googleAuthCredentialProvider: GoogleAuthCredentialProvider
+    private val googleAuthCredential: GoogleAuthCredential
 ) : AuthFacade {
     override suspend fun registerWithEmailAndPassword(
         emailAddress: EmailAddress, password: Password
@@ -67,7 +65,7 @@ class FirebaseAuthFacade(
     }
 
     private fun Token.mapToCredential(): AuthCredential = when (this) {
-        is Token.Google -> googleAuthCredentialProvider(idToken, accessToken)
+        is Token.Google -> googleAuthCredential(idToken, accessToken)
     }
 }
 

@@ -14,6 +14,8 @@ object Version {
     const val composeMaterial = "1.0.0-rc01"
     const val navigation = "2.5.3"
 
+    const val dagger = "2.44"
+
     const val firebase = "31.0.1"
     const val googleServices = "4.3.14"
     const val googleAuth = "20.3.0"

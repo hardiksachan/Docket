@@ -20,6 +20,8 @@ dependencies {
 
     implementation(Dependencies.coroutines)
 
+    implementation(Dependencies.javaXInject)
+
     with(Dependencies.Arrow) {
         implementation(platform(bom))
         implementation(core)

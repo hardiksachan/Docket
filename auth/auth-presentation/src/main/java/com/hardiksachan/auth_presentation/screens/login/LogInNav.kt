@@ -1,18 +1,19 @@
-package com.hardiksachan.auth_presentation.login
+package com.hardiksachan.auth_presentation.screens.login
 
 import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.hardiksachan.auth_application.AuthPresenter
 import com.hardiksachan.auth_presentation.AuthViewModel
 
-internal const val LogInScreenRoute = "login"
+internal const val LogInRoutePattern = "login"
 
 fun NavGraphBuilder.logInScreen(
     onNavigateToSignUpPage : () -> Unit
 ) {
-    composable(LogInScreenRoute) {
+    composable(LogInRoutePattern) {
         val viewModel: AuthViewModel = hiltViewModel()
         val uiState = viewModel.state.collectAsState()
         LogInScreen(
@@ -27,11 +28,7 @@ fun NavGraphBuilder.logInScreen(
 }
 
 fun NavController.navigateToLogin() {
-    navigate(LogInScreenRoute) {
+    navigate(LogInRoutePattern) {
         launchSingleTop = true
     }
-}
-
-internal fun hiltViewModel(): AuthViewModel {
-    TODO("Not yet implemented")
 }

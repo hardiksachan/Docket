@@ -13,8 +13,9 @@ import com.hardiksachan.auth_domain.Password
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
-class AuthPresenter(
+class AuthPresenter @Inject constructor(
     private val signInWithGoogleUseCase: SignInWithTokenUseCase,
     private val registerWithEmailAddressAndPasswordUseCase: RegisterWithEmailAddressAndPasswordUseCase,
     private val signInWithEmailAddressAndPasswordUseCase: SignInWithEmailAddressAndPasswordUseCase,
@@ -33,9 +34,9 @@ class AuthPresenter(
     sealed class Event {
         data class EmailChanged(val email: String) : Event()
         data class PasswordChanged(val password: String) : Event()
+        object SignInWithGooglePressed : Event()
         object RegisterWithEmailAndPasswordPressed : Event()
         object SignInWithEmailAndPasswordPressed : Event()
-        object SignInWithGooglePressed : Event()
     }
 
     suspend fun handleEvent(event: Event) {
@@ -51,8 +52,7 @@ class AuthPresenter(
     private fun handleEmailChanged(event: Event.EmailChanged) {
         _state.update {
             it.copy(
-                email = EmailAddress.create(event.email),
-                authFailureOrSuccessOption = None
+                email = EmailAddress.create(event.email), authFailureOrSuccessOption = None
             )
         }
     }
@@ -60,8 +60,7 @@ class AuthPresenter(
     private fun handlePasswordChanged(event: Event.PasswordChanged) {
         _state.update {
             it.copy(
-                password = Password.create(event.password),
-                authFailureOrSuccessOption = None
+                password = Password.create(event.password), authFailureOrSuccessOption = None
             )
         }
     }
@@ -69,15 +68,13 @@ class AuthPresenter(
     private suspend fun handleSignInWithGooglePressed() {
         _state.update {
             it.copy(
-                isSubmitting = true,
-                authFailureOrSuccessOption = None
+                isSubmitting = true, authFailureOrSuccessOption = None
             )
         }
         val authFailureOrSuccess = signInWithGoogleUseCase.execute()
         _state.update {
             it.copy(
-                isSubmitting = false,
-                authFailureOrSuccessOption = authFailureOrSuccess.some()
+                isSubmitting = false, authFailureOrSuccessOption = authFailureOrSuccess.some()
             )
         }
     }
@@ -100,8 +97,7 @@ class AuthPresenter(
         if (!email.isValid() || !password.isValid()) {
             _state.update {
                 it.copy(
-                    authFailureOrSuccessOption = None,
-                    showErrorMessages = true
+                    authFailureOrSuccessOption = None, showErrorMessages = true
                 )
             }
             return
@@ -109,8 +105,7 @@ class AuthPresenter(
 
         _state.update {
             it.copy(
-                isSubmitting = true,
-                authFailureOrSuccessOption = None
+                isSubmitting = true, authFailureOrSuccessOption = None
             )
         }
 
@@ -118,8 +113,7 @@ class AuthPresenter(
 
         _state.update {
             it.copy(
-                isSubmitting = false,
-                authFailureOrSuccessOption = useCaseResponse.some()
+                isSubmitting = false, authFailureOrSuccessOption = useCaseResponse.some()
             )
         }
     }

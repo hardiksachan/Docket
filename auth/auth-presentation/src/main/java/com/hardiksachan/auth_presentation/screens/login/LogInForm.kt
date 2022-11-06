@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.login
+package com.hardiksachan.auth_presentation.screens.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

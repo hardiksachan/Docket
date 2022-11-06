@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.start
+package com.hardiksachan.auth_presentation.screens.start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import com.hardiksachan.core_ui.resources.Graphics
 import com.hardiksachan.core_ui.theme.DocketTheme
 
 @Composable
-fun StartScreen(
+internal fun StartScreen(
     onGetStartedClicked: () -> Unit
 ) {
     Column(
