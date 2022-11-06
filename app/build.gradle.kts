@@ -61,7 +61,7 @@ dependencies {
 
     with (Libs.Auth) {
         implementation(project(domain))
-        implementation(project(presentation))
+        implementation(project(application))
     }
 
     with(Dependencies.AndroidX) {

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hardiksachan.auth_presentation"
+    namespace = "com.hardiksachan.core_ui"
     compileSdk = AndroidSDK.compileSdk
 
     defaultConfig {
@@ -33,13 +33,8 @@ android {
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 dependencies {
     implementation(project(Libs.core))
-    implementation(project(Libs.coreUi))
     with(Libs.Auth) {
         implementation(project(domain))
         implementation(project(application))
@@ -49,7 +44,6 @@ dependencies {
         implementation(core)
         implementation(activity)
         implementation(lifecycle)
-        implementation(navigationCompose)
     }
 
     with(Dependencies.AndroidX.Compose) {
@@ -66,25 +60,5 @@ dependencies {
     with(Dependencies.Arrow) {
         implementation(platform(bom))
         implementation(core)
-        implementation(coroutines)
-    }
-
-    with(Dependencies.Kotest) {
-        testImplementation(runner)
-        testImplementation(datatest)
-    }
-
-    testImplementation(Dependencies.turbine)
-
-    with(Dependencies.Strikt) {
-        testImplementation(core)
-        testImplementation(arrow)
-        testImplementation(filePeek)
-    }
-
-    with(Dependencies.MockK) {
-        testImplementation(core)
-        testImplementation(android)
-        testImplementation(agent)
     }
 }

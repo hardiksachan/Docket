@@ -28,6 +28,7 @@ object Dependencies {
     }
 
     const val kotlinXDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Version.datetime}"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.coroutines}"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Version.kotlin}"
 
     object Arrow {
@@ -61,6 +62,4 @@ object Dependencies {
         const val android = "io.mockk:mockk-android:${Version.mockK}"
         const val agent = "io.mockk:mockk-agent:${Version.mockK}"
     }
-
-
 }

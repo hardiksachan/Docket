@@ -18,6 +18,8 @@ dependencies {
         implementation(project(Libs.Auth.domain))
     }
 
+    implementation(Dependencies.coroutines)
+
     with(Dependencies.Arrow) {
         implementation(platform(bom))
         implementation(core)

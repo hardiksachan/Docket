@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/auth/auth-presentation" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-ui" />
           </set>
         </option>
       </GradleProjectSettings>

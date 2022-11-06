@@ -21,7 +21,7 @@ class EmailAddressSpec : FunSpec({
         }
         test("is NOT a valid email, an EmailAddress with ValueFailure is created") {
             // arrange
-            val invalidEmailStr = "dgnaudbg"
+            val invalidEmailStr = "jnonj"
 
             // act
             val email = EmailAddress.create(invalidEmailStr)
