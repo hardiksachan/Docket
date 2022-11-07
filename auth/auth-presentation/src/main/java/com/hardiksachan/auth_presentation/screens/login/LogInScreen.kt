@@ -3,6 +3,7 @@ package com.hardiksachan.auth_presentation.screens.login
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -20,12 +21,13 @@ import com.hardiksachan.core_ui.theme.DocketTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LogInScreen(
-    uiState: com.hardiksachan.auth_application.AuthPresenter.State,
+    uiState: AuthPresenter.State,
     onEmailAddressChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginButtonPressed: () -> Unit,
     onSignUpButtonPressed: () -> Unit,
     onGoogleLoginPressed: () -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
     Scaffold(
         modifier = Modifier
@@ -37,7 +39,8 @@ internal fun LogInScreen(
                     containerColor = MaterialTheme.colorScheme.background,
                 )
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -105,7 +108,8 @@ internal fun LogInScreenPreview() {
             onPasswordChanged = {},
             onLoginButtonPressed = {},
             onSignUpButtonPressed = {},
-            onGoogleLoginPressed = {}
+            onGoogleLoginPressed = {},
+            snackbarHostState = remember { SnackbarHostState() }
         )
     }
 }
@@ -124,7 +128,8 @@ internal fun LogInScreenPreviewWithError() {
             onPasswordChanged = {},
             onLoginButtonPressed = {},
             onSignUpButtonPressed = {},
-            onGoogleLoginPressed = {}
+            onGoogleLoginPressed = {},
+            snackbarHostState = remember { SnackbarHostState() }
         )
     }
 }

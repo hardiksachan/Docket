@@ -7,9 +7,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.hardiksachan.auth_domain.*
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@Singleton
 class FirebaseAuthFacade @Inject constructor(
     private val auth: FirebaseAuth,
     private val googleAuthCredential: GoogleAuthCredential

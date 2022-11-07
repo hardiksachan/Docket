@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arrow.core.getOrHandle
 import arrow.core.none
 import arrow.core.some
 import com.hardiksachan.auth_application.AuthPresenter
 import com.hardiksachan.core.failures.ValueFailure
+import com.hardiksachan.core_ui.components.PasswordTextField
 import com.hardiksachan.core_ui.components.TextFieldWithError
+import com.hardiksachan.core_ui.theme.DocketTheme
 
 @Composable
 internal fun LogInForm(
@@ -48,18 +51,10 @@ internal fun LogInForm(
             )
         )
         Spacer(modifier = Modifier.height(24.dp))
-        TextFieldWithError(
-            value = uiState.password.value.getOrHandle { failure -> failure.failedValue },
-            onValueChange = onPasswordChanged,
-            placeholder = {
-                Text("at least 8 characters")
-            },
-            label = {
-                Text("Password")
-            },
-            modifier = Modifier
-                .fillMaxWidth(),
-            errorMessage = uiState.password.value.fold(
+        PasswordTextField(
+            uiState.password.value.getOrHandle { failure -> failure.failedValue },
+            onPasswordChanged,
+            uiState.password.value.fold(
                 { failure ->
                     if (uiState.showErrorMessages) {
                         when (failure) {
@@ -72,6 +67,18 @@ internal fun LogInForm(
                 },
                 { none() }
             )
+        )
+    }
+}
+
+@Preview
+@Composable
+fun LoginFormPreview() {
+    DocketTheme {
+        LogInForm(
+            uiState = AuthPresenter.State(),
+            onEmailAddressChanged = {},
+            onPasswordChanged = {}
         )
     }
 }

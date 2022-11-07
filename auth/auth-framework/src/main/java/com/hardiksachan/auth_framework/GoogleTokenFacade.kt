@@ -17,7 +17,9 @@ import com.hardiksachan.auth_domain.TokenFacade
 import com.hardiksachan.core.flatMapLeft
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class GoogleTokenFacade @Inject constructor(
     private val oneTapClient: SignInClient,
     private val webServerId: String,
@@ -46,7 +48,7 @@ class GoogleTokenFacade @Inject constructor(
                             IntentSenderRequest.Builder(
                                 result.pendingIntent.intentSender
                             ).build()
-                        ) ?: return Token.GenerationFailure.UnableToLaunchPrompt.left()
+                        ) ?: return Token.GenerationFailure.UnknownFailure.left()
 
                         val credential = try {
                             oneTapClient
