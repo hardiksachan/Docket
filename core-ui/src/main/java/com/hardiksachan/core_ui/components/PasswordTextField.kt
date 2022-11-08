@@ -30,9 +30,6 @@ fun PasswordTextField(
     TextFieldWithError(
         value = password,
         onValueChange = onPasswordChanged,
-        placeholder = {
-            Text("at least 8 characters")
-        },
         label = {
             Text("Password")
         },
@@ -41,7 +38,7 @@ fun PasswordTextField(
         errorMessage = errorMessage,
         trailingIcon = {
             Icon(
-                painter = painterResource(id = if (obfuscated) Icons.Eye.off else Icons.Eye.on),
+                painter = painterResource(id = if (obfuscated) Icons.Eye.on else Icons.Eye.off),
                 contentDescription = "visibility switch",
                 modifier = Modifier
                     .clickable { obfuscated = !obfuscated }

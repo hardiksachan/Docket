@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.screens.login
+package com.hardiksachan.auth_presentation.screens.signup
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arrow.core.getOrHandle
 import arrow.core.none
@@ -16,15 +15,15 @@ import com.hardiksachan.auth_application.AuthPresenter
 import com.hardiksachan.core.failures.ValueFailure
 import com.hardiksachan.core_ui.components.PasswordTextField
 import com.hardiksachan.core_ui.components.TextFieldWithError
-import com.hardiksachan.core_ui.theme.DocketTheme
 
 @Composable
-internal fun LogInForm(
+internal fun SignUpForm(
     uiState: AuthPresenter.State,
     onEmailAddressChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
 ) {
     Column {
+        // TODO: add name field
         TextFieldWithError(
             value = uiState.email.value.getOrHandle { failure -> failure.failedValue },
             onValueChange = onEmailAddressChanged,
@@ -64,18 +63,6 @@ internal fun LogInForm(
                 },
                 { none() }
             )
-        )
-    }
-}
-
-@Preview
-@Composable
-fun LoginFormPreview() {
-    DocketTheme {
-        LogInForm(
-            uiState = AuthPresenter.State(),
-            onEmailAddressChanged = {},
-            onPasswordChanged = {}
         )
     }
 }

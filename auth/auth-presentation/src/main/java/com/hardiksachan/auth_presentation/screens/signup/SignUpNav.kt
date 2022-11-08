@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.screens.login
+package com.hardiksachan.auth_presentation.screens.signup
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.collectAsState
@@ -11,12 +11,12 @@ import com.hardiksachan.auth_application.AuthPresenter
 import com.hardiksachan.auth_presentation.AuthFailureOrSuccessListener
 import com.hardiksachan.auth_presentation.AuthViewModel
 
-private const val LogInRoutePattern = "login"
+private const val SignUpRoutePattern = "signup"
 
-internal fun NavGraphBuilder.logInScreen(
-    navigateToSignUpPage: () -> Unit,
+internal fun NavGraphBuilder.signUpScreen(
+    navigateToLoginPage: () -> Unit,
 ) {
-    composable(LogInRoutePattern) {
+    composable(SignUpRoutePattern) {
         val viewModel: AuthViewModel = hiltViewModel()
         val uiState = viewModel.state.collectAsState()
 
@@ -27,20 +27,20 @@ internal fun NavGraphBuilder.logInScreen(
             snackbarHostState = snackbarHostState
         )
 
-        LogInScreen(
+        SignUpScreen(
             uiState = uiState.value,
             onEmailAddressChanged = { viewModel.handleEvent(AuthPresenter.Event.EmailChanged(it)) },
             onPasswordChanged = { viewModel.handleEvent(AuthPresenter.Event.PasswordChanged(it)) },
-            onLoginButtonPressed = { viewModel.handleEvent(AuthPresenter.Event.SignInWithEmailAndPasswordPressed) },
-            onSignUpButtonPressed = navigateToSignUpPage,
+            onLoginButtonPressed = navigateToLoginPage,
+            onSignUpButtonPressed = { viewModel.handleEvent(AuthPresenter.Event.RegisterWithEmailAndPasswordPressed) },
             onGoogleLoginPressed = { viewModel.handleEvent(AuthPresenter.Event.SignInWithGooglePressed) },
             snackbarHostState = snackbarHostState
         )
     }
 }
 
-fun NavController.navigateToLogin() {
-    navigate(LogInRoutePattern) {
+fun NavController.navigateToSignUp() {
+    navigate(SignUpRoutePattern) {
         launchSingleTop = true
     }
 }

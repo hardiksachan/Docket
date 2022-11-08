@@ -6,11 +6,11 @@ import androidx.navigation.compose.composable
 internal const val StartRoutePattern = "start"
 
 fun NavGraphBuilder.startScreen(
-    onNavigateToLogIn: () -> Unit
+    navigateToLoginPage: () -> Unit
 ) {
     composable(StartRoutePattern) {
         StartScreen(
-            onGetStartedClicked = onNavigateToLogIn
+            onGetStartedClicked = navigateToLoginPage
         )
     }
 }

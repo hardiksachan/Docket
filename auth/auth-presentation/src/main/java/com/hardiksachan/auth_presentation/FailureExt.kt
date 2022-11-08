@@ -5,7 +5,7 @@ import com.hardiksachan.auth_domain.Token
 
 fun AuthFailure.toUserFriendlyMessage() = when (this) {
     AuthFailure.EmailAlreadyInUse -> "Email already exists"
-    AuthFailure.InvalidEmailAndPasswordCombination -> "Invalid email and password"
+    AuthFailure.InvalidEmailAndPasswordCombination -> "Invalid email or password"
     AuthFailure.InvalidToken -> "Invalid token found. Please try again"
     AuthFailure.ServerError -> "An unknown server error occurred"
     is AuthFailure.TokenNotGenerated -> failure.toUserFriendlyMessage()

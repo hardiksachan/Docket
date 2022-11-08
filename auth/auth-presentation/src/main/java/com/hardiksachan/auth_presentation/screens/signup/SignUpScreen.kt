@@ -1,4 +1,4 @@
-package com.hardiksachan.auth_presentation.screens.login
+package com.hardiksachan.auth_presentation.screens.signup
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -13,19 +13,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hardiksachan.auth_application.AuthPresenter
-import com.hardiksachan.auth_domain.EmailAddress
-import com.hardiksachan.auth_domain.Password
 import com.hardiksachan.auth_presentation.components.SocialLogin
 import com.hardiksachan.core_ui.theme.DocketTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun LogInScreen(
+internal fun SignUpScreen(
     uiState: AuthPresenter.State,
     onEmailAddressChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
-    onLoginButtonPressed: () -> Unit,
     onSignUpButtonPressed: () -> Unit,
+    onLoginButtonPressed: () -> Unit,
     onGoogleLoginPressed: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
@@ -34,7 +32,7 @@ internal fun LogInScreen(
             .fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Log In", style = MaterialTheme.typography.displayMedium) },
+                title = { Text(text = "Sign Up", style = MaterialTheme.typography.displayMedium) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
                 )
@@ -47,7 +45,7 @@ internal fun LogInScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp)
         ) {
-            LogInForm(
+            SignUpForm(
                 uiState = uiState,
                 onEmailAddressChanged = onEmailAddressChanged,
                 onPasswordChanged = onPasswordChanged
@@ -60,7 +58,7 @@ internal fun LogInScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            LoginFormButtons(onLoginButtonPressed, onSignUpButtonPressed)
+            SignUpFormButtons(onLoginButtonPressed, onSignUpButtonPressed)
             Spacer(modifier = Modifier.height(16.dp))
             SocialLogin(onGoogleLoginPressed)
             Spacer(modifier = Modifier.height(48.dp))
@@ -69,30 +67,30 @@ internal fun LogInScreen(
 }
 
 @Composable
-private fun LoginFormButtons(
+private fun SignUpFormButtons(
     onLoginButtonPressed: () -> Unit,
     onSignUpButtonPressed: () -> Unit
 ) {
     Button(
-        onClick = onLoginButtonPressed,
+        onClick = onSignUpButtonPressed,
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
     ) {
         Text(
-            "Log In",
+            "Sign Up",
             fontWeight = FontWeight.Medium,
             style = MaterialTheme.typography.bodyLarge
         )
     }
     TextButton(
-        onClick = onSignUpButtonPressed,
+        onClick = onLoginButtonPressed,
     ) {
         Text(
             buildAnnotatedString {
-                append("Don't have an account? ")
+                append("Already have an account? ")
                 withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("Sign Up")
+                    append("Log In")
                 }
             },
             style = MaterialTheme.typography.labelLarge,
@@ -109,28 +107,8 @@ private fun LoginFormButtons(
 @Composable
 internal fun LogInScreenPreview() {
     DocketTheme {
-        LogInScreen(
+        SignUpScreen(
             uiState = AuthPresenter.State(),
-            onEmailAddressChanged = {},
-            onPasswordChanged = {},
-            onLoginButtonPressed = {},
-            onSignUpButtonPressed = {},
-            onGoogleLoginPressed = {},
-            snackbarHostState = remember { SnackbarHostState() }
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun LogInScreenPreviewWithError() {
-    DocketTheme {
-        LogInScreen(
-            uiState = AuthPresenter.State(
-                email = EmailAddress.create("ab"),
-                password = Password.create("dgf"),
-                showErrorMessages = true,
-            ),
             onEmailAddressChanged = {},
             onPasswordChanged = {},
             onLoginButtonPressed = {},
