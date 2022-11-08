@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.hardiksachan.core_ui.Grey
+import com.hardiksachan.core_ui.theme.Grey
 import com.hardiksachan.core_ui.components.StrokedRow
 import com.hardiksachan.core_ui.resources.Icons
 

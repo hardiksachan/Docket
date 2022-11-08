@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hardiksachan.core_ui.Grey
+import com.hardiksachan.core_ui.theme.Grey
 
 @Composable
 fun StrokedRow(

@@ -41,10 +41,6 @@ android {
 
 dependencies {
     implementation(project(Libs.core))
-    with(Libs.Auth) {
-        implementation(project(domain))
-        implementation(project(application))
-    }
 
     with(Dependencies.AndroidX) {
         implementation(core)

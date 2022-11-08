@@ -1,4 +1,4 @@
-package com.hardiksachan.core_ui
+package com.hardiksachan.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
 
