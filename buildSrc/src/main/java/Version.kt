@@ -16,7 +16,7 @@ object Version {
 
     const val dagger = "2.44"
 
-    const val firebase = "31.0.1"
+    const val realm = "1.4.0"
     const val googleServices = "4.3.14"
     const val googleAuth = "20.3.0"
 

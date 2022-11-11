@@ -92,7 +92,6 @@ dependencies {
     }
 
     implementation(Dependencies.kotlinXDateTime)
-    implementation(Dependencies.kotlinReflect)
 
     with(Dependencies.Arrow) {
         implementation(platform(bom))

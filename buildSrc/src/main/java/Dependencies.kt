@@ -46,11 +46,7 @@ object Dependencies {
         const val coroutines = "io.arrow-kt:arrow-fx-coroutines"
     }
 
-    object Firebase {
-        const val bom = "com.google.firebase:firebase-bom:${Version.firebase}"
-        const val auth = "com.google.firebase:firebase-auth-ktx"
-    }
-
+    const val realmSyncEnabled = "io.realm.kotlin:library-sync:${Version.realm}"
     const val googleAuth = "com.google.android.gms:play-services-auth:${Version.googleAuth}"
 
     object Kotest {

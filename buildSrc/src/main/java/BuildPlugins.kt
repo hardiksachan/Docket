@@ -13,5 +13,6 @@ object BuildPlugins {
     const val javaLibrary = "java-library"
     const val daggerHilt  = "dagger.hilt.android.plugin"
     const val kapt = "kotlin-kapt"
+    const val realm = "io.realm.kotlin"
 }
 

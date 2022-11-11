@@ -12,12 +12,15 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.tasks.Task
 import com.hardiksachan.auth_domain.Token
 import com.hardiksachan.auth_domain.TokenFacade
 import com.hardiksachan.core.flatMapLeft
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 class GoogleTokenFacade @Inject constructor(
@@ -97,5 +100,15 @@ class GoogleTokenFacade @Inject constructor(
 
     internal suspend fun onResultFromView(intent: Intent?) {
         intentChannel.send(intent)
+    }
+}
+
+suspend fun <T> Task<T>.awaitCompletion() = suspendCoroutine<Either<Exception?, T>> { cont ->
+    addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            cont.resume(task.result.right())
+        } else {
+            cont.resume(task.exception.left())
+        }
     }
 }

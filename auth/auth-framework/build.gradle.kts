@@ -3,6 +3,7 @@ plugins {
     id(BuildPlugins.Kotlin.android)
     id(BuildPlugins.kapt)
     id(BuildPlugins.daggerHilt)
+    id(BuildPlugins.realm)
 }
 
 android {
@@ -68,11 +69,10 @@ dependencies {
         implementation(coroutines)
     }
 
-    with(Dependencies.Firebase) {
-        implementation(platform(bom))
-        implementation(auth)
-    }
+    implementation(Dependencies.realmSyncEnabled)
     implementation(Dependencies.googleAuth)
+
+    implementation(Dependencies.kotlinReflect)
 
     with(Dependencies.Kotest) {
         testImplementation(runner)
