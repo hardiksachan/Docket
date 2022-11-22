@@ -16,6 +16,8 @@ tasks.withType<Test> {
 dependencies {
     implementation(project(Libs.core))
 
+    implementation(Dependencies.coroutines)
+
     with(Dependencies.Arrow) {
         implementation(platform(bom))
         implementation(core)

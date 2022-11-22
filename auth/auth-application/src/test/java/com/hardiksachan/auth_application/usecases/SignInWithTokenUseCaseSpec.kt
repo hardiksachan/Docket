@@ -53,7 +53,7 @@ class SignInWithTokenUseCaseSpec : FunSpec({
         }
         test("token generation fails and NO call is forwarded to auth facade") {
             // arrange
-            val mockFailure = mockk<Token.GenerationFailure>()
+            val mockFailure = mockk<Token.Failure>()
 
             coEvery {
                 mockTokenGenerator.generate()

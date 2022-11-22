@@ -30,7 +30,7 @@ class GoogleTokenFacade @Inject constructor(
     private val intentChannel = Channel<Intent?>()
     var launcher: ActivityResultLauncher<IntentSenderRequest>? = null
 
-    override suspend fun generate(): Either<Token.GenerationFailure, Token> {
+    override suspend fun generate(): Either<Token.Failure, Token> {
         val signUpRequest = buildRequest(false)
         val signInRequest = buildRequest(true)
 
@@ -43,7 +43,7 @@ class GoogleTokenFacade @Inject constructor(
                     .awaitCompletion()
             }.fold(
                 {
-                    Token.GenerationFailure.NoAccountsFound.left()
+                    Token.Failure.NoAccountsFound.left()
                 },
                 { result ->
                     try {
@@ -51,7 +51,7 @@ class GoogleTokenFacade @Inject constructor(
                             IntentSenderRequest.Builder(
                                 result.pendingIntent.intentSender
                             ).build()
-                        ) ?: return Token.GenerationFailure.UnknownFailure.left()
+                        ) ?: return Token.Failure.UnknownFailure.left()
 
                         val credential = try {
                             oneTapClient
@@ -63,10 +63,16 @@ class GoogleTokenFacade @Inject constructor(
 
                         credential.toToken()
                     } catch (e: Exception) {
-                        Token.GenerationFailure.UnableToLaunchPrompt.left()
+                        Token.Failure.UnableToLaunchPrompt.left()
                     }
                 })
     }
+
+    override suspend fun invalidate(): Either<Token.Failure, Unit> =
+        when (oneTapClient.signOut().awaitCompletion()) {
+            is Either.Left -> Token.Failure.ServerError.left()
+            is Either.Right -> Unit.right()
+        }
 
     private fun buildRequest(filterByAuthorizedAccounts: Boolean) =
         BeginSignInRequest
@@ -83,19 +89,19 @@ class GoogleTokenFacade @Inject constructor(
     private fun Either<ApiException, SignInCredential>.toToken() = this.fold({ exception ->
         when (exception.statusCode) {
             CommonStatusCodes.CANCELED -> {
-                Token.GenerationFailure.PromptDismissedByUser
+                Token.Failure.PromptDismissedByUser
             }
             CommonStatusCodes.NETWORK_ERROR -> {
-                Token.GenerationFailure.ServerError
+                Token.Failure.ServerError
             }
             else -> {
-                Token.GenerationFailure.UnknownFailure
+                Token.Failure.UnknownFailure
             }
         }.left()
     }, { r ->
         r.googleIdToken?.let {
             Token.Google(it).right()
-        } ?: Token.GenerationFailure.UnknownFailure.left()
+        } ?: Token.Failure.UnknownFailure.left()
     })
 
     internal suspend fun onResultFromView(intent: Intent?) {

@@ -9,6 +9,8 @@ java {
 }
 
 dependencies {
+    implementation(Dependencies.uuid)
+
     with(Dependencies.Arrow) {
         implementation(platform(bom))
         implementation(core)

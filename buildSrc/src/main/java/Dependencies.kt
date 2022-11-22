@@ -1,4 +1,6 @@
 object Dependencies {
+    const val uuid = "app.softwork:kotlinx-uuid-core:${Version.uuid}"
+
     const val googleServices = "com.google.gms:google-services:${Version.googleServices}"
     const val hiltAndroidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Version.dagger}"
 

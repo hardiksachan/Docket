@@ -11,10 +11,10 @@ fun AuthFailure.toUserFriendlyMessage() = when (this) {
     is AuthFailure.TokenNotGenerated -> failure.toUserFriendlyMessage()
 }
 
-fun Token.GenerationFailure.toUserFriendlyMessage() = when (this) {
-    Token.GenerationFailure.NoAccountsFound -> "No accounts found"
-    Token.GenerationFailure.PromptDismissedByUser -> "Cancelled by user"
-    Token.GenerationFailure.ServerError -> "An unknown server error occurred"
-    Token.GenerationFailure.UnableToLaunchPrompt -> "Unable to launch prompt"
-    Token.GenerationFailure.UnknownFailure -> "An unknown error occurred"
+fun Token.Failure.toUserFriendlyMessage() = when (this) {
+    Token.Failure.NoAccountsFound -> "No accounts found"
+    Token.Failure.PromptDismissedByUser -> "Cancelled by user"
+    Token.Failure.ServerError -> "An unknown server error occurred"
+    Token.Failure.UnableToLaunchPrompt -> "Unable to launch prompt"
+    Token.Failure.UnknownFailure -> "An unknown error occurred"
 }
